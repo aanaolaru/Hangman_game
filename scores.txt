@@ -1,0 +1,1 @@
+{'Played games': 3, 'Won games': 1, 'Lost games': 2}

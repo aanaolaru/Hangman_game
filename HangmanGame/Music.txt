@@ -18,7 +18,7 @@ musician
 karaoke
 classical
 audio
-folk 
+folk
 radio
 beat
 singer
@@ -70,7 +70,6 @@ lyric
 spotify
 instrument
 ambience
-musicology
-prelude
 streaming
 ambient
+rock

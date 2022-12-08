@@ -1,4 +1,7 @@
 import random
+import os
+
+score = {"Played games": 0, "Won games": 0, "Lost games": 0}
 
 def menu():
 
@@ -35,7 +38,7 @@ def get_word(category_name):
 
     category_file = category_name + ".txt"
     try:
-        file = open("C:/Users/Alina/Desktop/Proiect/HangmanGame/" + category_file, "r")
+        file = open("C:/Users/Alina/Desktop/Hangman_Game/HangmanGame/" + category_file, "r")
         rows = 0
         for _ in file:
             rows += 1
@@ -63,6 +66,22 @@ def display_category(category_nr):
     print("It's a word from: " + category_name)
     return get_word(category_name)
 
+
+
+def player_scores(result):
+    
+    score.update({"Played games": score.get("Played games") + 1}) 
+    if result == 1:
+        score.update({"Won games": score.get("Won games") + 1})
+    else: 
+        score.update({"Lost games": score.get("Lost games") + 1})
+    if not os.path.isfile('./scores.txt'): 
+        file = open("scores.txt", "x") 
+        file.write(str(score))
+    else: 
+        file = open("scores.txt", "w")
+        file.write(str(score))
+    file.close()
 
 
 def guess(word, attempts):
@@ -121,6 +140,7 @@ def start_game():
         word = display_category(category) # return the random word from the file
         attempts = len(word) 
         game, failed_attempts = guess(word, attempts)
+        player_scores(game)
 
         if game == 1:
             print()

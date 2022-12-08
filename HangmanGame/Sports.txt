@@ -2,15 +2,15 @@ ballet
 gymnastics
 parkour
 badminton
-baseball	
+baseball
 basketball
-bobsledding	
+bobsledding
 bodyboarding
-bowling	
+bowling
 canoeing
 cricket
 skiing
-cycling	
+cycling
 diving
 dodgeball
 hockey
@@ -23,7 +23,7 @@ skateboarding
 skydiving
 snowboarding
 squash
-sumo	
+sumo
 surfing
 swimming
 tennis
@@ -31,7 +31,7 @@ triathlon
 volleyball
 weightlifting
 wrestling
-judo 
+judo
 jujutsu
 karate
 boxing
