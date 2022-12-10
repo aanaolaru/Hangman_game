@@ -63,10 +63,10 @@ def display_category(category_nr):
     possible_categories = {1: "Food", 2: "Sports", 3: "Feelings", 4: "Art", 5: "Careers", 6: "Programming", 7: "Animals", 8: "Languages", 9: "HumanBody", 10: "Music"}
     category_name = possible_categories.get(category_nr)
     print("It's a word from: " + category_name)
-    return get_word(category_name)
+    return get_word(category_name), category_name
 
     
-def player_scores(result):
+def player_scores(result, category_name):
     
     fsr = open("scores.json", "r") 
     scores = json.loads(fsr.read()) 
@@ -77,17 +77,27 @@ def player_scores(result):
     else: 
         scores["Lost games"] += 1
     
+
+    fcr= open("categ.json", "r")
+    categ = json.loads(fcr.read())
+
+    for key in categ.keys(): 
+        if key == category_name: 
+            categ[key] += 1 
+
+    fcw= open("categ.json", "w")
+    json.dump(categ, fcw) 
+
+    for key in categ:
+        if key == category_name and categ[key] != 0 : 
+            scores[category_name] = categ[key]
+            break
+
     fsw = open("scores.json", "w")
     json.dump(scores, fsw)   
 
-    if not os.path.isfile('./scores.txt'): 
-        file = open("scores.txt", "x") 
-        file.write(str(scores)) 
-    else: 
-        file = open("scores.txt", "w")
-        file.write(str(scores)) 
-
-    file.close()
+    fcr.close()
+    fcw.close()
     fsr.close()
     fsw.close()
     return scores
@@ -145,10 +155,10 @@ def start_game():
         if category == 0:
             print("༼ つ ⚈ ܫ ⚈ ༽つ -- See you next time!--")
             return
-        word = display_category(category) # return the random word from the file
+        word, category_name = display_category(category) # return the random word from the file and category_name
         attempts = len(word) 
         game, failed_attempts = guess(word, attempts) 
-        player_scores(game) 
+        player_scores(game, category_name) 
 
         if game == 1:
             print()
