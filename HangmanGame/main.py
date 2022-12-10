@@ -1,7 +1,6 @@
 import random
 import os
-
-score = {"Played games": 0, "Won games": 0, "Lost games": 0}
+import json
 
 def menu():
 
@@ -66,22 +65,32 @@ def display_category(category_nr):
     print("It's a word from: " + category_name)
     return get_word(category_name)
 
-
-
+    
 def player_scores(result):
     
-    score.update({"Played games": score.get("Played games") + 1}) 
+    fsr = open("scores.json", "r") 
+    scores = json.loads(fsr.read()) 
+    
+    scores["Played games"] += 1
     if result == 1:
-        score.update({"Won games": score.get("Won games") + 1})
+        scores["Won games"] += 1
     else: 
-        score.update({"Lost games": score.get("Lost games") + 1})
+        scores["Lost games"] += 1
+    
+    fsw = open("scores.json", "w")
+    json.dump(scores, fsw)   
+
     if not os.path.isfile('./scores.txt'): 
         file = open("scores.txt", "x") 
-        file.write(str(score))
+        file.write(str(scores)) 
     else: 
         file = open("scores.txt", "w")
-        file.write(str(score))
+        file.write(str(scores)) 
+
     file.close()
+    fsr.close()
+    fsw.close()
+    return scores
 
 
 def guess(word, attempts):
@@ -121,7 +130,7 @@ def guess(word, attempts):
             return 1, init_attempts - attempts
 
         if letter_placed == 0 or mistake == 1:  
-            attempts = attempts - 1  
+            attempts = attempts - 1  # keep guessing
 
         if attempts == 0: #  no more attempts => the player lost => -1
             print("       " + ' '.join(current_state) + "              Attempts left: " + str(attempts)) 
@@ -130,7 +139,6 @@ def guess(word, attempts):
 
 def start_game():
 
-    print("----------------------------------- Welcome to the Hangman Game!--------------------------------")
     menu()
     while True:
         category = get_category_number() 
@@ -139,8 +147,8 @@ def start_game():
             return
         word = display_category(category) # return the random word from the file
         attempts = len(word) 
-        game, failed_attempts = guess(word, attempts)
-        player_scores(game)
+        game, failed_attempts = guess(word, attempts) 
+        player_scores(game) 
 
         if game == 1:
             print()
@@ -157,4 +165,4 @@ def start_game():
 
 
 if __name__ == '__main__':
-    start_game()
+     start_game()
